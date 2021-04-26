@@ -1,8 +1,6 @@
 import numpy as np
 import pandas as pd
 
-
-
 def potencia(c):
     """Calcula y devuelve el conjunto potencia del 
        conjunto c.
@@ -78,25 +76,30 @@ def GenerarCTIndex(q,R,indices,cubo):
 
     
     
-#/////////////////////////////////////////////////////////////////////////////
-cubo=df = pd.read_excel('CuboEjemplo.xlsx')
 
-print('\n Cubo: \n', cubo)
-indices=IndicesLaticce(cubo)
-print("\n Indices de la lattice: \n",indices)
-cubo.groupby(['Cuboid'])
-
-
-R=GenerarCuboide(indices[len(indices)-1],cubo)
-R=AgregarBSTIndex(R)
-print ('\n R: \n', R)
-
-for i in indices: #Itera en forma Buttom Up
-    q=GenerarCuboide(i,cubo)#Genera el cuboide de dimensiones i
-    CTI=GenerarCTIndex(q,R,i,cubo)
     
+def main():
+    #/////////////////////////////////////////////////////////////////////////////
+    cubo = pd.read_excel('CuboEjemplo.xlsx')
+
+    print('\n Cubo: \n', cubo)
+    indices=IndicesLaticce(cubo)
+    print("\n Indices de la lattice: \n",indices)
+    cubo.groupby(['Cuboid'])
 
 
+    R=GenerarCuboide(indices[len(indices)-1],cubo)
+    R=AgregarBSTIndex(R)
+    print ('\n R: \n', R)
+
+    for i in indices: #Itera en forma Buttom Up
+        q=GenerarCuboide(i,cubo)#Genera el cuboide de dimensiones i
+        CTI=GenerarCTIndex(q,R,i,cubo)
+
+
+if __name__ == '__main__':
+    main()
+    
 
 
 
