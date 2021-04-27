@@ -48,7 +48,7 @@ def IndicesHijos(indices):
 # def IdentificarBST(p):
 #     for (colname,colval) in p.iteritems():
 #         print(colname, colval.values)
-        
+    
 
 
 def GenerarCTIndex(q,R,indices,cubo):
@@ -67,26 +67,36 @@ def GenerarCTIndex(q,R,indices,cubo):
             #IdentificarBST(p)
             print("******************Cuboide hijo****************************")
             print(p)
-            print (cuboideBST)
+            print(cuboideBST)
             print("**********************************************")
     
     return cubo
     
-    
+def AgruparPorDim(CTI): 
+    dimension = len(CTI.columns) - 2
+    dimLista = []
+    for i,j in CTI.iterrows():
+        cont = dimension
+        for x in range(1,len(j)-1):
+            if(j[x]=='*'):
+                cont-=1
+        dimLista.append(cont)
+    dimFrame = pd.DataFrame({'dimension': dimLista})
+    dimFrame = dimFrame.sort_values(by=['dimension'],ascending=False)
+    order = []
+    for i,j in dimFrame.iterrows():
+        order.append(i)
+        
+    return CTI.reindex(order)
 
-    
-    
-
-    
 def main():
     #/////////////////////////////////////////////////////////////////////////////
     cubo = pd.read_excel('CuboEjemplo.xlsx')
-
+    
     print('\n Cubo: \n', cubo)
     indices=IndicesLaticce(cubo)
     print("\n Indices de la lattice: \n",indices)
     cubo.groupby(['Cuboid'])
-
 
     R=GenerarCuboide(indices[len(indices)-1],cubo)
     R=AgregarBSTIndex(R)
@@ -95,11 +105,10 @@ def main():
     for i in indices: #Itera en forma Buttom Up
         q=GenerarCuboide(i,cubo)#Genera el cuboide de dimensiones i
         CTI=GenerarCTIndex(q,R,i,cubo)
+        CTIAgrupado = AgruparPorDim(CTI)
+        print(CTIAgrupado)
+        break #Esta colocado temporalmente       
 
 
 if __name__ == '__main__':
     main()
-    
-
-
-
